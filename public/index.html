@@ -1,48 +1,13 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>QR unique</title>
-
-<style>
-body{
-    font-family:Arial,sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    height:100vh;
-    margin:0;
-}
-
-#qr{
-    max-width:300px;
-}
-
-#hidden{
-    display:none;
-}
-</style>
-</head>
-<body>
-
-<img id="qr" src="/api/qr" alt="QR Code">
-
-<div id="hidden">
-    QR déjà scanné.
-</div>
+<img id="qr" src="/api/qr">
 
 <script>
-fetch("/api/state")
-.then(r => r.json())
-.then(data => {
-    if (!data.visible) {
-        document.getElementById("qr").style.display = "none";
-        document.getElementById("hidden").style.display = "block";
-    }
-});
-</script>
+async function update() {
+    const data = await fetch("/api/state").then(r => r.json());
 
-</body>
-</html>
+    document.getElementById("qr").style.display =
+        data.visible ? "block" : "none";
+}
+
+update();
+setInterval(update, 1000);
+</script>
