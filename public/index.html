@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR unique</title>
 
+<style>
+body{
+    font-family:sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    flex-direction:column;
+}
+
+#qr{
+    width:250px;
+    height:250px;
+}
+
+#message{
+    display:none;
+    font-size:1.3rem;
+}
+</style>
+</head>
+<body>
+
+<img id="qr">
+
+<div id="message">
+QR déjà scanné.
+</div>
+
+<script>
+
+const qr = document.getElementById("qr");
+const msg = document.getElementById("message");
+
+const target = `${location.origin}/api/scan`;
+
+qr.src =
+`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(target)}`;
+
+fetch("/api/state")
+.then(r=>r.json())
+.then(data=>{
+
+    if(data.visible){
+        qr.style.display="block";
+    }else{
+        qr.style.display="none";
+        msg.style.display="block";
+    }
+
+});
+
+</script>
+
+</body>
+</html>
