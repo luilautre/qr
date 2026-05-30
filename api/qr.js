@@ -1,4 +1,4 @@
-import QRCode from "qrcode";
+api/qr.jsimport QRCode from "qrcode";
 
 export default async function handler(req, res) {
     const url = `${req.headers["x-forwarded-proto"] || "https"}://${req.headers.host}/api/scan`;
