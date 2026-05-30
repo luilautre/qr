@@ -1,11 +1,7 @@
-import { kv } from "@vercel/kv";
+let lastScan = 0;
 
-export default async function handler(req, res) {
-  await kv.set("qrHidden", true);
-
-  res.writeHead(302, {
-    Location: "/"
-  });
-
-  res.end();
+export default function handler(req, res) {
+    lastScan = Date.now();
+    global.lastScan = lastScan;
+    res.redirect("/");
 }
