@@ -1,13 +1,24 @@
-<img id="qr" src="/api/qr">
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>QR</title>
+</head>
+<body>
+
+<img id="qr" src="/api/qr" width="300">
 
 <script>
-async function update() {
-    const data = await fetch("/api/state").then(r => r.json());
+const qr = document.getElementById("qr");
 
-    document.getElementById("qr").style.display =
-        data.visible ? "block" : "none";
-}
+const events = new EventSource("/api/events");
 
-update();
-setInterval(update, 1000);
+events.onmessage = (event) => {
+    if (event.data === "scanned") {
+        qr.style.display = "none";
+    }
+};
 </script>
+
+</body>
+</html>
