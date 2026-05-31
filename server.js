@@ -5,27 +5,23 @@ const app = express();
 
 let lastScan = 0;
 
-app.get("/scan", (req, res) => {
+app.get("/api/scan", (req, res) => {
     lastScan = Date.now();
     res.redirect("/");
 });
 
-app.get("/state", (req, res) => {
-    const visible = Date.now() - lastScan > 5000;
-    res.json({ visible });
+app.get("/api/state", (req, res) => {
+    res.json({
+        visible: Date.now() - lastScan > 5000
+    });
 });
 
-app.get("/qr", async (req, res) => {
-    const url = `${req.protocol}://${req.get("host")}/scan`;
-
+app.get("/api/qr", async (req, res) => {
+    const url = `${req.protocol}://${req.get("host")}/api/scan`;
     const buffer = await QRCode.toBuffer(url);
 
     res.setHeader("Content-Type", "image/png");
     res.send(buffer);
 });
 
-app.use(express.static("public"));
-
-app.listen(3000, () => {
-    console.log("Serveur lancé sur port 3000");
-});
+app.listen(3000);
