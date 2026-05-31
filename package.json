@@ -1,7 +1,6 @@
 {
   "name": "qrllt",
   "version": "1.0.0",
-  "description": "QR scanner app",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
